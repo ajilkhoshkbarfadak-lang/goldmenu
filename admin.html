@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مدیریت کافه</title>
+</head>
+<body>
+<h1>صفحه ادمین</h1>
+<div id="menuList"></div>
+<h2>افزودن آیتم جدید</h2>
+<form id="addItemForm">
+<label>دسته:</label>
+<select name="category">
+<option>گرم</option>
+<option>سرد</option>
+</select><br>
+<label>نام:</label><input type="text" name="name"><br>
+<label>قیمت:</label><input type="text" name="price"><br>
+<label>عکس URL:</label><input type="text" name="image_url"><br>
+<button type="submit">افزودن</button>
+</form>
+<script>
+const WORKER_URL = "https://YOUR_WORKER_DOMAIN_HERE";
+const menuList = document.getElementById('menuList');
+
+function loadMenu(){
+  ['گرم','سرد'].forEach(cat => {
+    fetch(`${WORKER_URL}/menu?category=${cat}`)
+      .then(res => res.json())
+      .then(items => {
+        const div = document.createElement('div');
+        div.innerHTML = `<h3>${cat}</h3>` + items.map(i => 
+          `<div>${i.name} - ${i.price} <button onclick="deleteItem(${i.id})">حذف</button></div>`
+        ).join('');
+        menuList.appendChild(div);
+      });
+  });
+}
+
+function deleteItem(id){
+  fetch(`${WORKER_URL}/admin/delete_item`,{
+    method:'POST',
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({id})
+  }).then(()=> { menuList.innerHTML=''; loadMenu(); });
+}
+
+document.getElementById('addItemForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const form = e.target;
+  fetch(`${WORKER_URL}/admin/add_item`, {
+    method:'POST',
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      category: form.category.value,
+      name: form.name.value,
+      price: form.price.value,
+      image_url: form.image_url.value
+    })
+  }).then(()=> { form.reset(); menuList.innerHTML=''; loadMenu(); });
+});
+
+loadMenu();
+</script>
+</body>
+</html>

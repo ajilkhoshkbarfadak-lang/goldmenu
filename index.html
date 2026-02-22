@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منوی کافه</title>
+<style>
+body { font-family: Tahoma, sans-serif; background:#f5f5f5; margin:0; padding:0; }
+header { background:#6b4226; color:white; text-align:center; padding:20px 0;}
+h2 { margin:20px 0 10px 0; color:#333; }
+.menu-section { width:90%; max-width:600px; margin:0 auto; }
+.item-card { display:flex; align-items:center; background:white; border-radius:8px; margin:10px 0; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.item-card img { width:70px; height:70px; border-radius:8px; margin-left:15px;}
+.item-card div { flex:1; }
+.item-card h3 { margin:0; font-size:1.1em; }
+.item-card p { margin:5px 0 0 0; color:#555; }
+.feedback { width:90%; max-width:600px; margin:20px auto; background:white; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.feedback textarea, .feedback select { width:100%; margin:10px 0; padding:8px; border-radius:5px; border:1px solid #ccc; font-size:0.95em;}
+.feedback button { padding:10px 20px; background:#6b4226; color:white; border:none; border-radius:5px; cursor:pointer;}
+.feedback button:hover { background:#53301c; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>منوی کافه</h1>
+</header>
+
+<div class="menu-section" id="menuSection">
+<h2>بار گرم</h2>
+<div class="item-card">
+<img src="https://via.placeholder.com/70?text=قهوه" alt="قهوه ترک">
+<div><h3>قهوه ترک</h3><p>70,000 تومان</p></div>
+</div>
+<div class="item-card">
+<img src="https://via.placeholder.com/70?text=لاته" alt="لاته">
+<div><h3>لاته</h3><p>95,000 تومان</p></div>
+</div>
+
+<h2>بار سرد</h2>
+<div class="item-card">
+<img src="https://via.placeholder.com/70?text=آیس+موکا" alt="آیس موکا">
+<div><h3>آیس موکا</h3><p>80,000 تومان</p></div>
+</div>
+</div>
+
+<div class="feedback">
+<h2>ثبت نظر شما</h2>
+<form id="feedbackForm">
+<label>امتیاز:</label>
+<select name="rate">
+<option>عالی</option>
+<option>خوب</option>
+<option>متوسط</option>
+<option>ضعیف</option>
+</select>
+<textarea name="comment" placeholder="نظر خود را بنویسید..." rows="3"></textarea>
+<button type="submit">ارسال</button>
+</form>
+</div>
+
+<script>
+const WORKER_URL = "https://YOUR_WORKER_DOMAIN_HERE"; // جایگذاری آدرس Worker
+
+function simulateScan(tableNumber){
+  fetch(`${WORKER_URL}/scan?table=${tableNumber}`)
+    .then(()=> console.log("QR scanned for table " + tableNumber))
+    .catch(e=> console.error(e));
+}
+
+document.getElementById('feedbackForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = e.target;
+  const data = {
+    rate: form.rate.value,
+    comment: form.comment.value,
+    table: "1"
+  };
+
+  fetch(`${WORKER_URL}/feedback`, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  })
+  .then(()=> { alert('ممنون از ثبت نظر شما 🙏'); form.reset(); })
+  .catch(e => { console.error(e); alert("خطا در ارسال نظر"); });
+});
+
+simulateScan(1);
+</script>
+
+</body>
+</html>
