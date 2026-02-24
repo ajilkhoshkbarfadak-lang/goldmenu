@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود به کافه خاطره</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', 'Vazir', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 40px;
+            padding: 40px 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .cafe-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            border-radius: 60px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(139,69,19,0.3);
+        }
+
+        h1 {
+            color: #8B4513;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0d6cc;
+            border-radius: 15px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+
+        .sticker-select {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .sticker {
+            width: 60px;
+            height: 60px;
+            background: #f8f4f0;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .sticker:hover {
+            transform: scale(1.1);
+        }
+
+        .sticker.selected {
+            border-color: #8B4513;
+            background: #fff0e0;
+        }
+
+        .enter-btn {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 60px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+
+        .enter-btn:hover {
+            background: #D2691E;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139,69,19,0.3);
+        }
+
+        .admin-link {
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .admin-link a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .admin-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cafe-logo">
+            ☕
+        </div>
+        
+        <h1>به کافه خاطره خوش آمدید</h1>
+        <p class="subtitle">برای مشاهده منو، شماره میز خود را وارد کنید</p>
+
+        <div class="input-group">
+            <label>شماره میز</label>
+            <select id="tableNumber">
+                <option value="میز ۱">میز ۱</option>
+                <option value="میز ۲">میز ۲</option>
+                <option value="میز ۳">میز ۳</option>
+                <option value="میز ۴">میز ۴</option>
+                <option value="میز ۵">میز ۵</option>
+                <option value="میز ۶">میز ۶</option>
+                <option value="میز ۷">میز ۷</option>
+                <option value="میز ۸">میز ۸</option>
+                <option value="میز ۹">میز ۹</option>
+                <option value="میز ۱۰">میز ۱۰</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>نام (اختیاری)</label>
+            <input type="text" id="customerName" placeholder="نام خود را وارد کنید">
+        </div>
+
+        <div>
+            <label>استیکر مورد علاقه</label>
+            <div class="sticker-select">
+                <div class="sticker selected" onclick="selectSticker('❤️')">❤️</div>
+                <div class="sticker" onclick="selectSticker('⭐')">⭐</div>
+                <div class="sticker" onclick="selectSticker('😊')">😊</div>
+                <div class="sticker" onclick="selectSticker('☕')">☕</div>
+                <div class="sticker" onclick="selectSticker('🍕')">🍕</div>
+                <div class="sticker" onclick="selectSticker('🎂')">🎂</div>
+            </div>
+        </div>
+
+        <button class="enter-btn" onclick="enterCafe()">
+            ورود به کافه
+        </button>
+
+        <div class="error-message" id="errorMessage">
+            لطفا شماره میز را انتخاب کنید
+        </div>
+
+        <div class="admin-link">
+            <a href="admin.html">🔐 ورود مدیریت</a>
+        </div>
+    </div>
+
+    <script>
+        let selectedSticker = '❤️';
+
+        function selectSticker(sticker) {
+            selectedSticker = sticker;
+            document.querySelectorAll('.sticker').forEach(s => s.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        function enterCafe() {
+            const table = document.getElementById('tableNumber').value;
+            const name = document.getElementById('customerName').value || 'مهمان';
+            
+            if (!table) {
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('cafeTable', table);
+            localStorage.setItem('customerName', name);
+            localStorage.setItem('customerSticker', selectedSticker);
+            
+            window.location.href = 'menu.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('cafeTable')) {
+                window.location.href = 'menu.html';
+            }
+        });
+    </script>
+</body>
+</html>
