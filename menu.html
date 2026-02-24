@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منوی کافه خاطره</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', 'Vazir', sans-serif;
+        }
+
+        body {
+            background: #f5f3f0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .user-header {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(139,69,19,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .table-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .sticker-badge {
+            background: white;
+            color: #8B4513;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 28px;
+        }
+
+        .exit-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 15px;
+            border-radius: 60px;
+        }
+
+        .category {
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .category.active {
+            background: #8B4513;
+            color: white;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(139,69,19,0.15);
+        }
+
+        .menu-item-image {
+            height: 160px;
+            background: linear-gradient(45deg, #f8f4f0, #e0d6cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .menu-item-content {
+            padding: 20px;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .menu-item-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .menu-item-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+
+        .menu-item-price::before {
+            content: 'تومان';
+            font-size: 12px;
+            margin-left: 5px;
+            color: #666;
+        }
+
+        .memories-section {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #8B4513;
+            margin-bottom: 25px;
+        }
+
+        .add-memory {
+            background: #f8f4f0;
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .memory-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0d6cc;
+            border-radius: 15px;
+            font-size: 16px;
+            resize: none;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+
+        .memory-submit {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .memory-card {
+            background: #f8f4f0;
+            border-radius: 20px;
+            padding: 20px;
+            border-right: 5px solid #8B4513;
+        }
+
+        .memory-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .memory-sticker {
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="user-header">
+            <div class="user-info">
+                <div class="table-badge" id="tableDisplay">میز ۱</div>
+                <div class="sticker-badge" id="stickerDisplay">❤️</div>
+                <div><span id="customerNameDisplay">مهمان</span> عزیز، خوش آمدید</div>
+            </div>
+            <button class="exit-btn" onclick="exitCafe()">🚪 خروج</button>
+        </div>
+
+        <div class="categories" id="categories"></div>
+        <div class="menu-grid" id="menuGrid"></div>
+
+        <div class="memories-section">
+            <h2 class="section-title">📝 یادگاری‌های مهمانان</h2>
+            <div class="add-memory">
+                <textarea class="memory-input" id="memoryText" placeholder="نظر یا یادگاری خود را بنویسید..."></textarea>
+                <button class="memory-submit" onclick="addMemory()">ثبت یادگاری</button>
+            </div>
+            <div class="memories-grid" id="memoriesGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        let menuItems = [
+            { id: 1, title: 'اسپرسو', price: 45000, category: 'قهوه', image: '☕', desc: 'اسپرسوی غلیظ و داغ' },
+            { id: 2, title: 'کاپوچینو', price: 65000, category: 'قهوه', image: '🥛', desc: 'اسپرسو با شیر و فوم' },
+            { id: 3, title: 'لاته', price: 70000, category: 'قهوه', image: '🥤', desc: 'اسپرسو با شیر گرم' },
+            { id: 4, title: 'چیزکیک', price: 75000, category: 'کیک', image: '🍰', desc: 'چیزکیک نیویورکی' }
+        ];
+
+        let memories = [
+            { id: 1, text: 'بهترین قهوه‌ای که خوردم!', date: '۱۴۰۳/۱۲/۰۱', sticker: '☕', table: 'میز ۵', name: 'علی' }
+        ];
+
+        let currentCategory = 'همه';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('cafeTable')) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('tableDisplay').textContent = localStorage.getItem('cafeTable');
+            document.getElementById('stickerDisplay').textContent = localStorage.getItem('customerSticker') || '❤️';
+            document.getElementById('customerNameDisplay').textContent = localStorage.getItem('customerName') || 'مهمان';
+
+            loadCategories();
+            renderMenu();
+            renderMemories();
+        });
+
+        function loadCategories() {
+            const categories = ['همه', 'قهوه', 'کیک', 'نوشیدنی گرم', 'نوشیدنی سرد'];
+            const container = document.getElementById('categories');
+            container.innerHTML = '';
+            categories.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = `category ${cat === currentCategory ? 'active' : ''}`;
+                div.textContent = cat;
+                div.onclick = () => {
+                    currentCategory = cat;
+                    loadCategories();
+                    renderMenu();
+                };
+                container.appendChild(div);
+            });
+        }
+
+        function renderMenu() {
+            const container = document.getElementById('menuGrid');
+            const filtered = currentCategory === 'همه' ? menuItems : menuItems.filter(item => item.category === currentCategory);
+            
+            let html = '';
+            filtered.forEach(item => {
+                html += `
+                    <div class="menu-item" onclick="alert('📋 ${item.title}\n💰 قیمت: ${item.price.toLocaleString()} تومان\n📝 ${item.desc}')">
+                        <div class="menu-item-image">${item.image}</div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-header">
+                                <span class="menu-item-title">${item.title}</span>
+                                <span class="menu-item-price">${item.price.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderMemories() {
+            const container = document.getElementById('memoriesGrid');
+            let html = '';
+            memories.slice().reverse().forEach(memory => {
+                html += `
+                    <div class="memory-card">
+                        <div>${memory.text}</div>
+                        <div class="memory-footer">
+                            <span>${memory.name} - ${memory.table} - ${memory.date}</span>
+                            <span class="memory-sticker" onclick="changeSticker(${memory.id})">${memory.sticker}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function addMemory() {
+            const text = document.getElementById('memoryText').value.trim();
+            if (!text) {
+                alert('لطفا متن یادگاری را وارد کنید');
+                return;
+            }
+            
+            const now = new Date();
+            const date = `${now.getFullYear()}/${(now.getMonth()+1)}/${now.getDate()}`;
+            
+            memories.push({
+                id: Date.now(),
+                text: text,
+                date: date,
+                sticker: localStorage.getItem('customerSticker') || '❤️',
+                table: localStorage.getItem('cafeTable'),
+                name: localStorage.getItem('customerName') || 'مهمان'
+            });
+            
+            renderMemories();
+            document.getElementById('memoryText').value = '';
+            alert('✅ یادگاری شما ثبت شد');
+        }
+
+        function changeSticker(id) {
+            const memory = memories.find(m => m.id === id);
+            if (memory) {
+                const stickers = ['❤️', '⭐', '😊', '☕', '🍕', '🎂'];
+                const currentIndex = stickers.indexOf(memory.sticker);
+                memory.sticker = stickers[(currentIndex + 1) % stickers.length];
+                renderMemories();
+            }
+        }
+
+        function exitCafe() {
+            localStorage.removeItem('cafeTable');
+            localStorage.removeItem('customerName');
+            localStorage.removeItem('customerSticker');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
